@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  discord_bot_worker1:
+    build: .
+    volumes:
+      - /proxy/discord/autodelete/bot.py:/app/bot.py
+    environment:
+      - DISCORD_TOKEN=XXXXXXXXXXXXXXX
+    restart: unless-stopped
