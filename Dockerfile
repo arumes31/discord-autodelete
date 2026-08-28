@@ -6,11 +6,19 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends --only-upgrade \
+        libssl3t64=3.5.7-1~deb13u2 \
+        openssl=3.5.7-1~deb13u2 \
+        openssl-provider-legacy=3.5.7-1~deb13u2 \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --system --gid 10001 bot \
     && useradd --system --uid 10001 --gid bot --home-dir /app --no-create-home bot
 
 COPY requirements.txt ./
-RUN python -m pip install --no-cache-dir --requirement requirements.txt
+RUN python -m pip install --no-cache-dir --requirement requirements.txt \
+    && python -m pip uninstall --yes setuptools
 
 COPY --chown=bot:bot bot.py ./
 
