@@ -1,8 +1,13 @@
 services:
   discord_bot_worker1:
     build: .
-    volumes:
-      - /proxy/discord/autodelete/bot.py:/app/bot.py
     environment:
-      - DISCORD_TOKEN=XXXXXXXXXXXXXXX
+      DISCORD_TOKEN: ${DISCORD_TOKEN:?set DISCORD_TOKEN in the environment}
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped

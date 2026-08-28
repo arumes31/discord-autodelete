@@ -4,14 +4,14 @@ This is a simple Discord bot designed to automatically delete messages older tha
 
 ## Features
 
--   **Automatic Message Deletion**: Deletes messages older than 7 days.
+-   **Automatic Message Deletion**: Deletes messages older than 7 days without logging message contents.
 -   **Channel Iteration**: Shuffles channels to ensure fair processing.
 -   **Docker Support**: Easy deployment using Docker and Docker Compose.
 
 ## Prerequisites
 
--   Python 3.9+
--   `discord.py` library
+-   Python 3.14+
+-   `discord.py` 2.x
 -   A Discord Bot Token
 
 ## Setup
@@ -59,7 +59,7 @@ Ensure you have Docker and Docker Compose installed.
 
 1.  Create a `.env` file in the project root with your Discord token:
     ```
-    DISCORD_TOKEN=YOUR_BOT_TOKEN_HERE
+      DISCORD_TOKEN=YOUR_BOT_TOKEN_HERE
     ```
 2.  Run the bot using Docker Compose:
     ```bash
@@ -77,6 +77,10 @@ Ensure you have Docker and Docker Compose installed.
     ```bash
     python bot.py
     ```
+
+The container runs as a numeric non-root user with a read-only root filesystem and no
+Linux capabilities. Rotate the Discord token immediately if it is ever printed, committed,
+or exposed through container configuration output.
 
 ## Contributing
 
