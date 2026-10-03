@@ -3,3 +3,42 @@ __pycache__/
 .ruff_cache/
 *.py[cod]
 .env
+
+# Local documentation and audit output
+*.md
+!/README.md
+!/SECURITY.md
+/docs/
+/dependency-audit-*/
+
+# Local agent and editor files
+.claudeignore
+.claude/
+.codex/
+.agents/
+.idea/
+.vscode/
+
+# Python environments, builds, and reports
+.venv/
+venv/
+.tox/
+.nox/
+.mypy_cache/
+build/
+dist/
+*.egg-info/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local environment variants, logs, and temporary files
+.env.*
+!.env.example
+*.log
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
