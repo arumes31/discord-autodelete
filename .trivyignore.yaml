@@ -3,15 +3,17 @@ vulnerabilities:
     purls:
       - pkg:pypi/msgpack@1.1.2
     statement: >-
-      The official Python image's third-party SBOM describes a build-time
-      dependency that is absent from the final runtime filesystem. Runtime
-      `pip list` is verified during remediation and does not contain msgpack.
+      The official Python image's third-party SBOM includes build-time
+      msgpack metadata. The final runtime image contains neither standalone
+      msgpack nor pip's vendored copy after pip is uninstalled. Verify with
+      importlib.metadata and a filesystem check; pip list is unavailable.
     expired_at: 2026-11-30
   - id: CVE-2025-47273
     purls:
       - pkg:pypi/setuptools@70.3.0
     statement: >-
-      The official Python image's third-party SBOM describes a build-time
-      dependency that is absent from the final runtime filesystem. Runtime
-      `pip list` is verified during remediation and does not contain setuptools.
+      The official Python image's third-party SBOM includes build-time
+      setuptools metadata. The final runtime image contains neither
+      setuptools nor pip's vendored pkg_resources after pip is uninstalled.
+      Verify with importlib.metadata and a filesystem check.
     expired_at: 2026-11-30
