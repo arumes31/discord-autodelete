@@ -7,15 +7,17 @@ import datetime as dt
 import logging
 import os
 import random
+from pathlib import Path
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import tasks
 
 LOG = logging.getLogger("discord-autodelete")
 RETENTION_DAYS = 7
 
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="!", intents=intents)
+# A plain client is enough: the bot exposes no commands, so no prefix parser is registered.
+bot = discord.Client(intents=intents)
 
 
 def utcnow() -> dt.datetime:
@@ -75,15 +77,31 @@ async def on_ready() -> None:
         delete_old_messages.start()
 
 
+def load_token() -> str:
+    """Read the bot token from DISCORD_TOKEN_FILE (e.g. a Docker secret) or DISCORD_TOKEN."""
+
+    token_file = os.getenv("DISCORD_TOKEN_FILE")
+    if token_file:
+        try:
+            token = Path(token_file).read_text(encoding="utf-8").strip()
+        except OSError as exc:
+            raise SystemExit(f"cannot read DISCORD_TOKEN_FILE: {exc.strerror}") from None
+        if not token:
+            raise SystemExit("DISCORD_TOKEN_FILE is empty")
+        return token
+
+    token = os.getenv("DISCORD_TOKEN")
+    if not token:
+        raise SystemExit("DISCORD_TOKEN or DISCORD_TOKEN_FILE is required")
+    return token
+
+
 def main() -> None:
     logging.basicConfig(
         level=os.getenv("LOG_LEVEL", "INFO").upper(),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
-    token = os.getenv("DISCORD_TOKEN")
-    if not token:
-        raise SystemExit("DISCORD_TOKEN is required")
-    bot.run(token, log_handler=None)
+    bot.run(load_token(), log_handler=None)
 
 
 if __name__ == "__main__":

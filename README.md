@@ -51,6 +51,19 @@ $env:DISCORD_TOKEN="YOUR_BOT_TOKEN_HERE"
 
 Replace `YOUR_BOT_TOKEN_HERE` with your actual bot token.
 
+Alternatively, set `DISCORD_TOKEN_FILE` to the path of a file containing the token. When it is
+set it takes precedence over `DISCORD_TOKEN`. This works with Docker secrets and keeps the token
+out of `docker inspect` output (see below).
+
+### 4. Bot Permissions
+
+The bot does not use any commands. Invite it with only the permissions it needs, and grant them
+only in the channels that should be cleaned up:
+
+-   **View Channel**
+-   **Read Message History**
+-   **Manage Messages**
+
 ## Running the Bot
 
 ### Using Docker Compose (Recommended)
@@ -66,6 +79,27 @@ Ensure you have Docker and Docker Compose installed.
     docker-compose up --build -d
     ```
     This will build the Docker image and start the bot in detached mode.
+
+#### Using a Docker secret instead of an environment variable
+
+Environment variables are visible to anyone who can run `docker inspect` on the host. To pass
+the token as a file instead, store it in `./secrets/discord_token` (ignored by git) and replace
+the `environment` block in `docker-compose.yaml` with:
+
+```yaml
+services:
+  discord_bot_worker1:
+    environment:
+      DISCORD_TOKEN_FILE: /run/secrets/discord_token
+    secrets:
+      - discord_token
+
+secrets:
+  discord_token:
+    file: ./secrets/discord_token
+```
+
+The file must be readable by UID 10001 inside the container.
 
 ### Manually
 
