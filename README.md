@@ -26,7 +26,7 @@ Follow the official Discord guide to create a bot application and obtain your bo
 Clone this repository:
 
 ```bash
-git clone https://github.com/your-username/discord-autodelete.git
+git clone https://github.com/arumes31/discord-autodelete.git
 cd discord-autodelete
 ```
 
@@ -50,6 +50,11 @@ $env:DISCORD_TOKEN="YOUR_BOT_TOKEN_HERE"
 ```
 
 Replace `YOUR_BOT_TOKEN_HERE` with your actual bot token.
+
+Additionally, you can optionally configure `LOG_LEVEL` to control logging verbosity (e.g. `DEBUG`, `INFO`, `WARNING`, `ERROR`; default: `INFO`):
+```bash
+export LOG_LEVEL="INFO"
+```
 
 Alternatively, set `DISCORD_TOKEN_FILE` to the path of a file containing the token. When it is
 set it takes precedence over `DISCORD_TOKEN`. This works with Docker secrets and keeps the token
