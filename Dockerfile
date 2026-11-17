@@ -8,7 +8,9 @@ WORKDIR /app
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends --only-upgrade \
+        apt=3.0.4 \
         gzip=1.13-1+deb13u1 \
+        libapt-pkg7.0=3.0.4 \
         libc-bin=2.41-12+deb13u4 \
         libc6=2.41-12+deb13u4 \
         libpcre2-8-0=10.46-1~deb13u3 \
@@ -17,6 +19,7 @@ RUN apt-get update \
         openssl=3.5.7-1~deb13u3 \
         openssl-provider-legacy=3.5.7-1~deb13u3 \
         perl-base=5.40.1-6+deb13u1 \
+        zlib1g=1:1.3.dfsg+really1.3.1-1+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system --gid 10001 bot \
