@@ -12,6 +12,14 @@ concurrency:
 
 jobs:
   quality:
+    # ci.yml's jobs request elevated GITHUB_TOKEN scopes (security-events: write for
+    # the Trivy scan, pull-requests: read for Gitleaks). A called reusable workflow is
+    # capped by the caller's grant, so without these the run fails at startup. Grant
+    # them on the calling job so the reusable CI gets the scopes it declares.
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
     uses: ./.github/workflows/ci.yml
 
   candidate:
